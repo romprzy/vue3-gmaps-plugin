@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
-import './style.scss'
+import './vue3-gmaps-plugin/style.scss'
 import App from './App.vue'
-import Vue3GmapsPlugin from './vue3-gmaps-plugin.ts'
+import Vue3GmapsPlugin from './vue3-gmaps-plugin/vue3-gmaps-plugin.ts'
 
 createApp(App)
   .use(Vue3GmapsPlugin)
