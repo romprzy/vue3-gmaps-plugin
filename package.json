@@ -27,6 +27,7 @@
     "vue": "^3.4.37"
   },
   "devDependencies": {
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@types/node": "^22.5.4",
     "@types/vue": "^1.0.31",
     "@typescript-eslint/eslint-plugin": "^8.4.0",
