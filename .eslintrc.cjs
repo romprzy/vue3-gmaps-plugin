@@ -10,7 +10,9 @@ module.exports = {
   env: {
     node: true,
   },
-  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+  },
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
@@ -26,7 +28,8 @@ module.exports = {
       ignorePattern: 'd="([\\s\\S]*?)"',
     }],
     'comma-dangle': ['error', 'always-multiline'],
-    'semi': ['error', 'never'],
+    semi: ['error', 'never'],
+    quotes: [2, 'single'],
 
     // Typescript
     // '@typescript-eslint/quotes': ['error', 'single',

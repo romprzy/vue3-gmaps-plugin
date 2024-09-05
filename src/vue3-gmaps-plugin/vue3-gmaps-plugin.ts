@@ -7,5 +7,4 @@ const Vue3GmapsPlugin: Plugin = {
     app.component('GoogleMapLoader', GoogleMapLoader)
   },
 }
-
 export default Vue3GmapsPlugin
