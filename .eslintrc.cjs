@@ -18,6 +18,10 @@ module.exports = {
     'eslint:recommended',
     // '@vue/eslint-config-typescript',
   ],
+  globals: {
+    google: 'readonly',
+    maps: 'readonly',
+  },
   rules: {
     // General
     'no-multiple-empty-lines': ['error'],
