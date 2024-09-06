@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="google-map-loader"
-    style="height: 80vh; background: red; position: relative;"
-  >
+  <div class="google-map-loader">
     <div
       ref="mapContainer"
       class="map-container"
@@ -16,12 +13,8 @@
 <script setup lang="ts">
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader'
 import { ref } from 'vue'
-import MapOptions = google.maps.MapOptions
 
-interface IGoogleMapLoaderProps {
-  loaderOptions?: Partial<LoaderOptions>
-  mapOptions?: MapOptions
-}
+import { IGoogleMapLoaderProps } from './index'
 
 const props = defineProps<IGoogleMapLoaderProps>()
 

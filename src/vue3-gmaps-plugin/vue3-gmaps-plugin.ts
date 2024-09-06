@@ -1,5 +1,6 @@
 import { App, Plugin } from 'vue'
 import { GoogleMap, GoogleMapLoader } from './components'
+import './style.scss'
 
 const Vue3GmapsPlugin: Plugin = {
   install(app: App) {
