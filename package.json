@@ -24,8 +24,10 @@
     "./dist/style.css": "./dist/style.css"
   },
   "peerDependencies": {
-    "@googlemaps/js-api-loader": "^1.16.8",
     "vue": "^3.4.37"
+  },
+  "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.8"
   },
   "devDependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",

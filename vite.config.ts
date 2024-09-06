@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, './src/vue3-gmaps-plugin/vue3-gmaps-plugin.ts'),
-      name: 'vue3-gmaps-plugin',
+      name: 'Vue3GmapsPlugin',
       fileName: 'vue3-gmaps-plugin',
     },
     rollupOptions: {
