@@ -12,12 +12,15 @@
     "preview": "vite preview"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/vue3-gmaps-plugin/components/"
   ],
+  "types": "./dist/vue3-gmaps-plugin.d.ts",
   "main": "./dist/vue3-gmaps-plugin.umd.cjs",
   "module": "./dist/vue3-gmaps-plugin.js",
   "exports": {
     ".": {
+      "types": "./dist/vue3-gmaps-plugin.d.ts",
       "import": "./dist/vue3-gmaps-plugin.js",
       "require": "./dist/vue3-gmaps-plugin.umd.cjs"
     },
@@ -40,6 +43,7 @@
     "sass-embedded": "^1.78.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.1.1",
     "vue-tsc": "^2.0.29"
   }
 }
