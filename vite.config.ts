@@ -7,12 +7,11 @@ import dts from 'vite-plugin-dts'
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, './src/vue3-gmaps-plugin/vue3-gmaps-plugin.ts'),
+      entry: resolve(__dirname, './src/index.ts'),
       name: 'Vue3GmapsPlugin',
       fileName: 'vue3-gmaps-plugin',
     },
     rollupOptions: {
-      input: './src/vue3-gmaps-plugin/vue3-gmaps-plugin.ts',
       external: ['vue'],
       output: {
         globals: {
@@ -22,7 +21,12 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({
+      isProduction: true,
+      features: {
+        customElement: true,
+      },
+    }),
     dts({
       tsconfigPath: './tsconfig.build.json',
     }),

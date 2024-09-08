@@ -1,7 +1,7 @@
 {
   "name": "@romprzy/vue3-gmaps-plugin",
   "private": false,
-  "version": "0.2.2",
+  "version": "0.2.25",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -12,22 +12,22 @@
     "preview": "vite preview"
   },
   "files": [
-    "dist",
-    "src/vue3-gmaps-plugin/components/"
+    "dist"
   ],
-  "types": "./dist/vue3-gmaps-plugin.d.ts",
-  "main": "./dist/vue3-gmaps-plugin.umd.cjs",
-  "module": "./dist/vue3-gmaps-plugin.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/vue3-gmaps-plugin.umd.cjs",
+  "module": "dist/vue3-gmaps-plugin.js",
   "exports": {
     ".": {
-      "types": "./dist/vue3-gmaps-plugin.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/vue3-gmaps-plugin.js",
       "require": "./dist/vue3-gmaps-plugin.umd.cjs"
     },
     "./dist/style.css": "./dist/style.css"
   },
   "peerDependencies": {
-    "vue": "^3.4.37"
+    "vue": "^3.4.37",
+    "sass-embedded": "^1.78.0"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8"
