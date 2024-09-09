@@ -12,13 +12,24 @@
 
 <script setup lang="ts">
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader'
-import { ref } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { IGoogleMapLoaderProps } from './'
 
-const props = defineProps<IGoogleMapLoaderProps>()
+const props = withDefaults(defineProps<IGoogleMapLoaderProps>(), {
+  errorText: '',
+})
 
-const loader = new Loader(props.loaderOptions as LoaderOptions)
-const errorTextValue = ref<string>(props.errorText)
+const errorTextValue = ref<string>(props.errorText || '')
+
+const apiKey = ref<string>(inject('apiKey') || props.loaderOptions?.apiKey || (inject('loaderOptions') as Partial<LoaderOptions>)?.apiKey || '')
+const languageValue = computed<string | undefined>(() => undefined)
+const loaderOptions = ref<Partial<LoaderOptions>>({
+  ...(props.loaderOptions || inject('loaderOptions') as Partial<LoaderOptions>),
+  apiKey: apiKey.value,
+  language: languageValue.value,
+})
+
+const loader = new Loader({ ...loaderOptions.value } as LoaderOptions)
 
 const mapContainer = ref()
 let map: google.maps.Map
