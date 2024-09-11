@@ -12,24 +12,35 @@
 
 <script setup lang="ts">
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader'
-import { ref, inject, computed } from 'vue'
+import { ref, inject } from 'vue'
 import { IGoogleMapLoaderProps } from './'
+import MapOptions = google.maps.MapOptions
 
 const props = withDefaults(defineProps<IGoogleMapLoaderProps>(), {
   errorText: '',
 })
 
-const errorTextValue = ref<string>(props.errorText || '')
+const emits = defineEmits(['set:map'])
 
-const apiKey = ref<string>(inject('apiKey') || props.loaderOptions?.apiKey || (inject('loaderOptions') as Partial<LoaderOptions>)?.apiKey || '')
-const languageValue = computed<string | undefined>(() => undefined)
-const loaderOptions = ref<Partial<LoaderOptions>>({
-  ...(props.loaderOptions || inject('loaderOptions') as Partial<LoaderOptions>),
-  apiKey: apiKey.value,
-  language: languageValue.value,
-})
+const injectedErrorText = inject<string | undefined>('errorText')
+const injectedApiKey = inject<string>('apiKey')
+const injectedLoaderOptions = inject<Partial<LoaderOptions>>('loaderOptions')
+const injectedMapOptions = inject<Partial<MapOptions>>('mapOptions')
 
-const loader = new Loader({ ...loaderOptions.value } as LoaderOptions)
+const errorTextValue = ref<string>(injectedErrorText || props.errorText || '')
+const apiKey: string = props.loaderOptions?.apiKey || injectedApiKey || injectedLoaderOptions?.apiKey || ''
+const mapOptions: Partial<MapOptions> = {
+  ...injectedMapOptions,
+  ...props.mapOptions,
+}
+
+const loaderOptions: LoaderOptions = {
+  ...props.loaderOptions,
+  ...injectedLoaderOptions,
+  apiKey,
+}
+
+const loader = new Loader(loaderOptions)
 
 const mapContainer = ref()
 let map: google.maps.Map
@@ -38,8 +49,9 @@ loader
   .importLibrary('maps')
   .then(async ({ Map }) => {
     errorTextValue.value = ''
-    map = new Map(mapContainer.value, props.mapOptions)
-    console.log('map', map)
+    map = new Map(mapContainer.value, mapOptions)
+
+    emits('set:map', map)
   })
   .catch((e) => {
     errorTextValue.value = props.errorText
