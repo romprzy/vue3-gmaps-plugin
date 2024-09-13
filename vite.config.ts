@@ -6,9 +6,9 @@ import dts from 'vite-plugin-dts'
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
+    alias: [
+      { find: '@', replacement: resolve(__dirname, './src/') },
+    ],
   },
   build: {
     lib: {

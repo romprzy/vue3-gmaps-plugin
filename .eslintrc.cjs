@@ -21,6 +21,7 @@ module.exports = {
   globals: {
     google: 'readonly',
     maps: 'readonly',
+    marker: 'readonly',
   },
   rules: {
     // General
