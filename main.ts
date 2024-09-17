@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import createVue3GmapsPlugin from './src'
-import { IMapOptions } from './src/types'
+import createVue3GmapsPlugin from './src/vue3-gmaps-plugin'
+import { IMapOptions } from './src/vue3-gmaps-plugin/types'
 
 const mapOptions: IMapOptions = {
   center: {

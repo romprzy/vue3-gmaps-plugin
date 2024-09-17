@@ -25,16 +25,34 @@
         <!--          :markers="markers"-->
         <!--        />-->
       </div>
+      <div class="column" style="flex-basis: 100%; display: flex;">
+        <RussianRegions3 />
+        <!--        <GoogleMapLoader-->
+        <!--          :loader-options="loaderOptions"-->
+        <!--          :map-options="mapOptions"-->
+        <!--          :markers="markers"-->
+        <!--        />-->
+      </div>
+      <div class="column" style="flex-basis: 100%; display: flex;">
+        <RussianRegions2 />
+        <!--        <GoogleMapLoader-->
+        <!--          :loader-options="loaderOptions"-->
+        <!--          :map-options="mapOptions"-->
+        <!--          :markers="markers"-->
+        <!--        />-->
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import RussianRegions from './examples/geo-json/RussianRegions.vue'
-import RefineriesExample from './examples/markers/RefineriesExample.vue'
-import RussianOilPipielines from './examples/geo-json/RussianOilPipielines.vue'
-import RefineriesExample2 from './examples/markers/RefineriesExample2.vue'
-import RefineriesExample3 from './examples/markers/RefineriesExample3.vue'
+import RussianRegions from './src/examples/geo-json/RussianRegions.vue'
+import RefineriesExample from './src/examples/markers/RefineriesExample.vue'
+import RussianOilPipielines from './src/examples/geo-json/RussianOilPipielines.vue'
+import RefineriesExample2 from './src/examples/markers/RefineriesExample2.vue'
+import RefineriesExample3 from './src/examples/markers/RefineriesExample3.vue'
+import RussianRegions2 from './src/examples/geo-json/RussianRegions2.vue'
+import RussianRegions3 from './src/examples/geo-json/RussianRegions3.vue'
 
 // const data1 = new google.maps.Data({ map })
 // const data2 = new google.maps.Data({ map })
@@ -56,13 +74,13 @@ import RefineriesExample3 from './examples/markers/RefineriesExample3.vue'
 html, body {
   padding: 0;
   margin: 0;
-  //color: #fff;
+  font-family: Candara;
 }
 
 .container {
   display: flex;
   flex-wrap: wrap;
-  height: 100vh;
+  min-height: 100vh;
   background: #333;
   justify-content: space-between;
   align-items: stretch;
@@ -72,9 +90,21 @@ html, body {
 .column {
   box-sizing: border-box;
   position: relative;
-  flex-basis: 50%;
+  flex-basis: 100%;
   padding: 12px;
-  height: 50vh;
+  min-height: 300px;
+}
+
+@media(min-width: 768px) {
+  .column {
+    flex-basis: 50%;
+  }
+}
+
+@media(min-height: 768px) {
+  .column {
+    min-height: 50vh;
+  }
 }
 </style>
 

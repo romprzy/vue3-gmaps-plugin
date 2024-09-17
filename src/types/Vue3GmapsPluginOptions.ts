@@ -1,5 +1,0 @@
-import { IGoogleMapLoaderProps } from '../components/GoogleMapLoader'
-
-export interface Vue3GmapsPluginOptions extends Partial<IGoogleMapLoaderProps> {
-  apiKey?: string
-}

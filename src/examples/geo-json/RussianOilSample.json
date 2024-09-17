@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "name": "Oil Infrastructure - map data 2024-06-12_1934",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "index": 229,
+        "project": "Abqaiq-Yanbu NGL pipeline",
+        "unit": "",
+        "type": "NGL Pipelines",
+        "parent": "Saudi Aramco [100.00%]",
+        "country": "Saudi Arabia",
+        "status_tabular": "operating",
+        "start_year": "1982",
+        "capacity": 290000.0,
+        "geom": "line",
+        "url": "https://www.gem.wiki/Abqaiq-Yanbu_gas_pipeline",
+        "id": 0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            49.67728,
+            25.924365
+          ],
+          [
+            46.692409,
+            24.714277
+          ],
+          [
+            38.19002,
+            24.023207
+          ],
+          [
+            38.245263,
+            23.965193
+          ]
+        ]
+      }
+    }
+  ]
+}
+
