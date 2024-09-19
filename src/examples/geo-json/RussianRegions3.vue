@@ -6,18 +6,15 @@
     <div style="color: #fff; height: 90vh; overflow: auto;">
       <div class="error-text" style="padding: 0 1em; margin-bottom: .5em;">{{ boundsLoadingError }}</div>
       <div style="padding: 0 1em;"><button style="display: block; padding: .2em 1em;" @click="setGeoJson">Load Bounds</button></div>
-      <div style="padding: 0 1em;"><button style="display: block; padding: .2em 1em;" @click="getFeatures()">Get features</button></div>
-      <div style="padding: .25em 1em;">Current: <strong>{{ current?.shapeName }}</strong></div>
-      <!--      <div style="padding: 0 1em;"><button style="padding: .2em 1em;" @click="getCenter">getCenter</button></div>-->
-      <!--      <div style="padding: 0 1em;"><button style="padding: .2em 1em;" @click="getBounds">getBounds</button></div>-->
-      <div style="padding: 0 1em;"><button style="display: block; padding: .2em 1em;" @click="fitBounds">fitBounds</button></div>
+      <div style="padding: .25em 1em;">Current: <strong>{{ selected?.name }}</strong></div>
+      <div style="padding: 0 1em;"><button style="display: block; padding: .2em 1em;" @click="fitBounds(map, geoData)">fitBounds</button></div>
 
       <template v-if="items">
         <RussianRegions3List
           :items="items"
-          @click:item="toggleItem($event.id)"
-          @mouseenter:item="setCurrent"
-          @mouseleave:item="setCurrent($event, false)"
+          @click:item="toggleActiveItem($event.id)"
+          @mouseenter:item="toggleSelectedItem($event.id)"
+          @mouseleave:item="toggleSelectedItem($event.id, false)"
         />
       </template>
     </div>
@@ -25,81 +22,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import RussianRegions3List from './RussianRegions3List.vue'
+import { Feature } from 'geojson'
+import { defaultStyle, selectedStyleOverride, hoverStyleOverride } from '@/options'
+import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab.js'
+import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
 
-const json = ref()
-const geoData = ref()
+
 const items = ref()
 const mapLoading = ref<boolean>(true)
-const boundsLoading = ref<boolean>()
 const map = ref()
+const geoData = ref()
+
+const boundsLoading = ref<boolean>()
 const boundsLoadingError = ref()
-
-// const items = computed(() => json.value?.features.map(({ properties }) => ({
-//   id: properties.id,
-//   name: properties.shapeName,
-//   iso: properties.shapeISO,
-//   active: properties.active,
-//   selected: properties.selected,
-// })))
-const prepareGeoJson = (geoJson) => {
-  geoJson.features.forEach(feature => {
-    feature.id = feature.properties.shapeID
-    feature.properties.id = feature.properties.shapeID
-  })
-
-  items.value = geoJson.features.map(({ properties }) => properties)
-  //   ({
-  //   id: properties.id,
-  //   name: properties.shapeName,
-  //   iso: properties.shapeISO,
-  //   active: properties.active,
-  //   selected: properties.selected,
-  // }))
-}
-// const features = computed(() => geoData.value?.getFeatures())
-
-const getCenter = () => {
-  const getCenter = map.value.getCenter()
-  console.log('getCenter', getCenter.lat(), getCenter.lng())
-}
-
-const getFeatures = () => {
-  console.log('geoData.getFeatures()', geoData.value)
-}
-const getBounds = () => {
-  const getBounds = map.value.getBounds()
-  console.log('getBounds', getBounds)
-}
-const fitBounds = () => {
-  const bounds = new google.maps.LatLngBounds()
-  geoData.value.forEach((feature) => {
-    feature.getGeometry().forEachLatLng((latLng) => {
-      bounds.extend(latLng)
-    })
-  })
-
-  map.value.fitBounds(bounds, 0)
-}
-const toggleItem = (id: string | number) => {
-  const feature = geoData.value.getFeatureById(id)
-  feature.setProperty('active', !feature.getProperty('active'))
-  const selected = items.value.find(item => id === item.id)
-  selected.active = feature.getProperty('active')
-}
-
-const current = ref()
-const setCurrent = (item, value: boolean = true) => {
-  geoData.value.revertStyle()
-  const feature = geoData.value.getFeatureById(item.id)
-  feature.setProperty('selected', value)
-  current.value = value ? item : undefined
-}
-
-const loadGeoJson = async(url) => {
+const geoJsonUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
+let geoJson: IWMGeoLabGeoBoundaries
+const getGeoJson = async(url: string | URL) => {
   boundsLoading.value = true
-  json.value = await fetch(url)
+  geoJson = await fetch(url)
     .then(response => response.json())
     .catch(e => {
       console.error(e)
@@ -109,70 +51,71 @@ const loadGeoJson = async(url) => {
       boundsLoading.value = false
     })
 }
+
+const toggleActiveItem = (id: string | number) => {
+  const feature = geoData.value.getFeatureById(id)
+  feature.setProperty('active', !feature.getProperty('active'))
+  const listItem = items.value?.find((item: Feature) => id === item.id)
+  listItem.active = feature.getProperty('active')
+}
+const toggleSelectedItem = (id: string | number, value: boolean = true) => {
+  const feature = geoData.value.getFeatureById(id)
+  feature.setProperty('selected', value)
+  const listItem = items.value.find((item: Feature) => id === item.id)
+  listItem.selected = value
+  selected.value = listItem
+}
+
+const selected = ref()
+
 const setMap = (loadedMap: google.maps.Map) => {
   map.value = loadedMap
   mapLoading.value = false
 }
 
-const defaultStyle = {
-  // clickable: true,
-  strokeWeight: 1,
-  strokeColor: 'rgba(255, 0, 0, .2)',
-  fillOpacity: .05,
-  fillColor: 'rgba(255, 0, 0, .35)',
-  // label: 'ooo',
-}
-
-const selectedStyleOverride = {
-  strokeColor: 'rgba(0, 255, 0, .75)',
-  fillOpacity: .5,
-}
-
-const hoverStyleOverride = {
-  strokeWeight: 2,
-  fillOpacity: .5,
-  fillColor: 'blue',
-}
-
-const setGeoJson = async() => {
-  await loadGeoJson('/public/geoBoundaries-RUS-ADM1_simplified.geo.json?url')
-  prepareGeoJson(json.value)
-
-  geoData.value = new google.maps.Data({ map: map.value })
-  geoData.value.addGeoJson(json.value)
-  geoData.value.setStyle((feature) => ({
+const setGeoDataListeners = (geoData: google.maps.Data) => {
+  geoData.setStyle((feature) => ({
     ...defaultStyle,
     ...(feature.getProperty('active') && (selectedStyleOverride || {})),
     ...(feature.getProperty('selected') && (hoverStyleOverride || {})),
   }))
 
-  geoData.value.addListener('click', (event) => {
-    const id = event.feature.getId()
-    toggleItem(id)
+  geoData.addListener('click', (event: any) => {
+    const feature = event.feature
+    if (feature) {
+      const id = feature.getId()
+      toggleActiveItem(id)
+    }
   })
 
-  geoData.value.addListener('mouseover', (event) => {
-    geoData.value.revertStyle()
-    event.feature.setProperty('selected', true)
-    current.value = event.feature.Fg
+  geoData.addListener('mouseover', (event: any) => {
+    // geoData.revertStyle()
+    const feature = event.feature
+    if (feature) {
+      const id = feature.getId()
+      toggleSelectedItem(id)
+    }
   })
 
-  geoData.value.addListener('mouseout', (event) => {
-    geoData.value.revertStyle()
-    event.feature.setProperty('selected', false)
-    current.value = ''
+  geoData.addListener('mouseout', (event: any) => {
+    // geoData.revertStyle()
+    const feature = event.feature
+    if (feature) {
+      const id = feature.getId()
+      toggleSelectedItem(id, false)
+    }
   })
+}
 
-  // const dataItems = []
-  // geoData.value.forEach(item => {
-  //   // item.setProperty('id', item.Fg.shapeID)
-  //   // const id = item.getId()
-  //   // console.log('item.Fg', item.Fg)
-  //   dataItems.push(item.Fg)
-  // })
-  // items.value = dataItems
+const setGeoJson = async() => {
+  await getGeoJson(geoJsonUrl)
+  items.value = prepareWMGeoLabGeoJson(geoJson)
 
-  fitBounds()
+  geoData.value = new google.maps.Data({ map: map.value })
+  geoData.value.addGeoJson(geoJson)
+
+  fitBounds(map.value, geoData.value)
+  setGeoDataListeners(geoData.value)
 }
 </script>
 

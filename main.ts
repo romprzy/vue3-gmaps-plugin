@@ -2,6 +2,19 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import createVue3GmapsPlugin from './src/vue3-gmaps-plugin'
 import { IMapOptions } from './src/vue3-gmaps-plugin/types'
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+  theme: {
+    defaultTheme: 'dark',
+  },
+})
 
 const mapOptions: IMapOptions = {
   center: {
@@ -14,5 +27,6 @@ const mapOptions: IMapOptions = {
 }
 
 createApp(App)
+  .use(vuetify)
   .use(createVue3GmapsPlugin, { mapOptions })
   .mount('#app')

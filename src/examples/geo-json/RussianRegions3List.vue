@@ -1,5 +1,5 @@
 <template>
-  <div
+  <v-list-item
     v-for="item in items"
     :key="item.id"
     class="list-item"
@@ -8,15 +8,15 @@
     @mouseleave="$emit('mouseleave:item', item)"
     @mouseover="$emit('mouseenter:item', item)"
   >
-    {{ item.shapeName }} ({{ item.shapeISO }})
-  </div>
+    {{ item.name }} ({{ item.iso }})
+  </v-list-item>
 </template>
 
 <script setup lang="ts">
 interface IItem {
   id?: string | number
-  shapeName?: string
-  shapeISO?: string
+  name?: string
+  iso?: string
   active?: boolean
   selected?: boolean
 }
@@ -30,7 +30,7 @@ defineEmits(['click:item', 'mouseenter:item', 'mouseleave:item'])
 <style lang="scss">
 .list-item {
   position: relative;
-  padding: .35em 2em;
+  padding-left: 2em !important;
   cursor: pointer;
   border-top: 1px solid transparent;
   border-bottom: 1px solid #000;

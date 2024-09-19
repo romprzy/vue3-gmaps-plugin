@@ -5,6 +5,10 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    host: 'dev.gmaps.romprzy.local',
+    port: 9013,
+  },
   resolve: {
     alias: [
       { find: '@', replacement: resolve(__dirname, './src/vue3-gmaps-plugin/') },
