@@ -8,7 +8,9 @@ export type IWMGeoLabGeoBoundariesProperties = GeoJsonProperties & {
   shapeType: string
 }
 
-export type IWMGeoLabGeoBoundaries<G extends Geometry | null = Geometry, P = IWMGeoLabGeoBoundariesProperties> = FeatureCollection & {
+export type IWMGeoLabGeoFeature<G extends Geometry | null = Geometry, P = IWMGeoLabGeoBoundariesProperties> = Exclude<Feature<G, P>, null>
+
+export type IWMGeoLabGeoBoundaries = FeatureCollection & {
   type: 'FeatureCollection';
-  features: Array<Exclude<Feature<G, P>, null>>;
+  features: Array<IWMGeoLabGeoFeature>;
 }

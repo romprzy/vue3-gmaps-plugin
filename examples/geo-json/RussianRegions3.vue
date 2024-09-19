@@ -24,11 +24,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import RussianRegions3List from './RussianRegions3List.vue'
-import { Feature } from 'geojson'
 import { defaultStyle, selectedStyleOverride, hoverStyleOverride } from '@/options'
-import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab.js'
+import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
-
+import { Feature } from 'geojson'
 
 const items = ref()
 const mapLoading = ref<boolean>(true)

@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/vue3-gmaps-plugin/*"]
-    },
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -21,8 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
-  "include": ["src/vue3-gmaps-plugin/**/*.ts", "src/vue3-gmaps-plugin/**/*.tsx", "src/vue3-gmaps-plugin/**/*.vue"],
-  "exclude": ["src/examples/"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["examples"]
 }

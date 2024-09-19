@@ -83,14 +83,14 @@
 </template>
 
 <script setup lang="ts">
-import RussianRegions from './src/examples/geo-json/RussianRegions.vue'
-import RefineriesExample from './src/examples/markers/RefineriesExample.vue'
-import RussianOilPipielines from './src/examples/geo-json/RussianOilPipielines.vue'
-import RefineriesExample2 from './src/examples/markers/RefineriesExample2.vue'
-import RefineriesExample3 from './src/examples/markers/RefineriesExample3.vue'
-import RussianRegions2 from './src/examples/geo-json/RussianRegions2.vue'
-import RussianRegions3 from './src/examples/geo-json/RussianRegions3.vue'
-import CombinedMap from './src/examples/combined-maps/CombinedMap.vue'
+import RussianRegions from './examples/geo-json/RussianRegions.vue'
+import RefineriesExample from './examples/markers/RefineriesExample.vue'
+import RussianOilPipielines from './examples/geo-json/RussianOilPipielines.vue'
+import RefineriesExample2 from './examples/markers/RefineriesExample2.vue'
+import RefineriesExample3 from './examples/markers/RefineriesExample3.vue'
+import RussianRegions2 from './examples/geo-json/RussianRegions2.vue'
+import RussianRegions3 from './examples/geo-json/RussianRegions3.vue'
+import CombinedMap from './examples/combined-maps/CombinedMap.vue'
 
 // const data1 = new google.maps.Data({ map })
 // const data2 = new google.maps.Data({ map })
