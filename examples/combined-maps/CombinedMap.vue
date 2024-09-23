@@ -42,6 +42,7 @@
         </v-toolbar>
         <GoogleMapLoader @set:map="setMap" />
       </v-col>
+
       <v-col
         class="flex-grow-1 flex-shrink-0"
         cols="12"
