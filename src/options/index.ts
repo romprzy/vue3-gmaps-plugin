@@ -1,8 +1,8 @@
-import styles, { defaultStyle, hoverStyleOverride, selectedStyleOverride } from './styles.ts'
+import styles, { defaultStyle, hoverStyleOverride, activeStyleOverride } from './styles.ts'
 
 export {
   styles,
   defaultStyle,
   hoverStyleOverride,
-  selectedStyleOverride,
+  activeStyleOverride,
 }

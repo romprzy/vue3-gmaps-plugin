@@ -6,6 +6,7 @@
 import ruJson from './ru.geo.json'
 const setMap = async (map) => {
   const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary
+  // const { Map3DElement } = await google.maps.importLibrary('maps3d') as google.maps.MarkerLibrary
 
   const data = new google.maps.Data({ map })
   data.addGeoJson(ruJson)

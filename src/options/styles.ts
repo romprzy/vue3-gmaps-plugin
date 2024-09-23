@@ -1,6 +1,12 @@
 import { IGoogleStyle } from '../types'
+export interface IGoogleStyles {
+  defaultStyle?: google.maps.Data.StyleOptions
+  activeStyleOverride?: google.maps.Data.StyleOptions
+  hoverStyleOverride?: google.maps.Data.StyleOptions
+  styles?: IGoogleStyle
+}
 
-export const defaultStyle: IGoogleStyle = {
+export const defaultStyle: google.maps.Data.StyleOptions = {
   // clickable: true,
   strokeWeight: 1,
   strokeColor: 'rgba(255, 0, 0, .2)',
@@ -9,20 +15,20 @@ export const defaultStyle: IGoogleStyle = {
   // label: 'ooo',
 }
 
-export const selectedStyleOverride: IGoogleStyle = {
+export const activeStyleOverride: google.maps.Data.StyleOptions = {
   strokeColor: 'rgba(0, 255, 0, .75)',
   fillOpacity: .5,
 }
 
-export const hoverStyleOverride: IGoogleStyle = {
+export const hoverStyleOverride: google.maps.Data.StyleOptions = {
   strokeWeight: 2,
   fillOpacity: .5,
   fillColor: 'blue',
 }
 
-export const styles = {
+export const styles: IGoogleStyles = {
   defaultStyle,
-  selectedStyleOverride,
+  activeStyleOverride,
   hoverStyleOverride,
 }
 

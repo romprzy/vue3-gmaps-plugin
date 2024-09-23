@@ -3,7 +3,7 @@
     v-for="item in items"
     :key="item.id"
     class="list-item"
-    :class="{ current: item.selected, active: item.active }"
+    :class="{ hover: item.hover, active: item.active }"
     @click="$emit('click:item', item)"
     @mouseleave="$emit('mouseleave:item', item)"
     @mouseover="$emit('mouseenter:item', item)"
@@ -18,7 +18,7 @@ interface IItem {
   name?: string
   iso?: string
   active?: boolean
-  selected?: boolean
+  hover?: boolean
 }
 export interface IRussianRegionsProps {
   items: IItem[]
@@ -35,7 +35,7 @@ defineEmits(['click:item', 'mouseenter:item', 'mouseleave:item'])
   border-top: 1px solid transparent;
   border-bottom: 1px solid #000;
 
-  &.current {
+  &.hover {
     background: rgba(250, 100, 100, .25);
     border-top: 1px dashed rgba(255, 255, 255, .75);
     border-bottom: 1px dashed rgba(255, 255, 255, .75);

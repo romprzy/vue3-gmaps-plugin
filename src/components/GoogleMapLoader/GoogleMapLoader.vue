@@ -61,6 +61,9 @@ loader
     loaded.value = true
     emits('set:map', map)
 
+    const types = map.mapTypes
+    console.log('types', types)
+    console.log('map', map)
   })
   .catch((e) => {
     map = undefined

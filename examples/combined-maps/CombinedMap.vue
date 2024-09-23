@@ -10,7 +10,19 @@
           <v-toolbar-items>
             <v-btn>Load refineries</v-btn>
             <v-divider vertical />
-            <v-btn>Load boundaries</v-btn>
+            <v-btn
+              :class="{'bg-error': boundsLoadingError, 'bg-info': boundsLoading, 'bg-success': boundsJson}"
+              :loading="boundsLoading"
+              @click="setBoundaries(boundsUrl)"
+            >
+              <template #prepend>
+                <v-icon
+                  :icon="(boundsJson && 'mdi-check') || (boundsLoading && 'mdi-reload') || (boundsLoadingError && 'mdi-exclamation') || 'mdi-help'"
+                  size="12"
+                />
+              </template>
+              Load boundaries
+            </v-btn>
             <v-divider vertical />
             <v-btn>Load pipelines</v-btn>
             <v-divider vertical />
@@ -43,12 +55,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useSetGoogleMap } from '@/composables/setGoogleMap'
+import { useGetGeoJson } from '@/composables/getGeoJson'
+import { IWMGeoLabGeoBoundaries } from '@/types'
+import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
+import { useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
 const mapType = ref('roadmap')
 
-const geoJsonUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
+const boundsUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
 
-const map = ref<google.maps.Map>()
-const setMap = (loadedMap: google.maps.Map) => {
-  map.value = loadedMap
+const {
+  map,
+  setMap,
+} = useSetGoogleMap()
+
+const {
+  boundsLoading,
+  boundsLoadingError,
+  getGeoJson,
+} = useGetGeoJson()
+
+const { setGeoDataStyles } = useSetGeoDataStyles()
+
+const geoData = ref()
+const boundsJson = ref<IWMGeoLabGeoBoundaries>()
+
+const setBoundaries = async() => {
+  boundsLoading.value = true
+  boundsJson.value = await getGeoJson(boundsUrl)
+
+  if (boundsJson.value) {
+    geoData.value = new google.maps.Data({ map: map.value })
+    geoData.value.addGeoJson(boundsJson.value)
+    setGeoDataStyles(geoData.value)
+    fitBounds(map.value, geoData.value)
+  }
 }
 </script>
