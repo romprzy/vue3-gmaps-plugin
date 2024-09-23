@@ -11,13 +11,13 @@
             <v-btn>Load refineries</v-btn>
             <v-divider vertical />
             <v-btn
-              :class="{'bg-error': boundsLoadingError, 'bg-info': boundsLoading, 'bg-success': boundsJson}"
-              :loading="boundsLoading"
+              :class="{'bg-error': geoJsonLoadingError, 'bg-info': geoJsonLoading, 'bg-success': boundsJson}"
+              :loading="geoJsonLoading"
               @click="setBoundaries(boundsUrl)"
             >
               <template #prepend>
                 <v-icon
-                  :icon="(boundsJson && 'mdi-check') || (boundsLoading && 'mdi-reload') || (boundsLoadingError && 'mdi-exclamation') || 'mdi-help'"
+                  :icon="(boundsJson && 'mdi-check') || (geoJsonLoading && 'mdi-reload') || (geoJsonLoadingError && 'mdi-exclamation') || 'mdi-help'"
                   size="12"
                 />
               </template>
@@ -58,7 +58,7 @@ import { ref } from 'vue'
 import { useSetGoogleMap } from '@/composables/setGoogleMap'
 import { useGetGeoJson } from '@/composables/getGeoJson'
 import { IWMGeoLabGeoBoundaries } from '@/types'
-import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
+import { fitBounds } from '@/helpers'
 import { useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
 const mapType = ref('roadmap')
 
@@ -70,8 +70,8 @@ const {
 } = useSetGoogleMap()
 
 const {
-  boundsLoading,
-  boundsLoadingError,
+  geoJsonLoading,
+  geoJsonLoadingError,
   getGeoJson,
 } = useGetGeoJson()
 
@@ -81,7 +81,7 @@ const geoData = ref()
 const boundsJson = ref<IWMGeoLabGeoBoundaries>()
 
 const setBoundaries = async() => {
-  boundsLoading.value = true
+  geoJsonLoading.value = true
   boundsJson.value = await getGeoJson(boundsUrl)
 
   if (boundsJson.value) {

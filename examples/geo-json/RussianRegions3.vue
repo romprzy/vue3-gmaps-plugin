@@ -4,10 +4,10 @@
       <GoogleMapLoader @set:map="setMap" />
     </div>
     <div style="color: #fff; height: 90vh; overflow: auto;">
-      <div class="error-text" style="padding: 0 1em; margin-bottom: .5em;">{{ boundsLoadingError }}</div>
+      <div class="error-text" style="padding: 0 1em; margin-bottom: .5em;">{{ geoJsonLoadingError }}</div>
       <div style="padding: 0 1em;">
         <v-btn
-          :loading="boundsLoading"
+          :loading="geoJsonLoading"
           style="display: block; padding: .2em 1em;"
           @click="setGeoJson(geoJsonUrl)"
         >Load Bounds</v-btn>
@@ -51,8 +51,8 @@ const geoJsonUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
 let clearEvents = () => {}
 
 const {
-  boundsLoading,
-  boundsLoadingError,
+  geoJsonLoading,
+  geoJsonLoadingError,
   getGeoJson,
 } = useGetGeoJson()
 

@@ -2,30 +2,30 @@ import { ref } from 'vue'
 import { IWMGeoLabGeoBoundaries } from '../types'
 
 export const useGetGeoJson = () => {
-  const boundsLoading = ref<boolean>()
-  const boundsLoadingError = ref()
+  const geoJsonLoading = ref<boolean>()
+  const geoJsonLoadingError = ref()
 
   const getGeoJson = async(url: string | URL) => {
-    boundsLoading.value = true
-    boundsLoadingError.value = undefined
+    geoJsonLoading.value = true
+    geoJsonLoadingError.value = undefined
 
     const geoJson: IWMGeoLabGeoBoundaries = await fetch(url)
       .then(response => response.json())
       .catch(e => {
         console.error('Bounds loading error')
         console.error(e)
-        boundsLoadingError.value = e
+        geoJsonLoadingError.value = e
       })
       .finally(() => {
-        boundsLoading.value = false
+        geoJsonLoading.value = false
       })
 
-    return boundsLoadingError.value ? undefined : geoJson
+    return geoJsonLoadingError.value ? undefined : geoJson
   }
 
   return {
-    boundsLoading,
-    boundsLoadingError,
+    geoJsonLoading,
+    geoJsonLoadingError,
     getGeoJson,
   }
 }
