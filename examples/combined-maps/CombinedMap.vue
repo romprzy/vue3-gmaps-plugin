@@ -1,7 +1,8 @@
 <template>
-  <v-container class="d-flex flex-column pa-0" fluid>
-    <v-row>
+  <v-container class="d-flex flex-column flex-grow-1 overflow-hidden" fluid>
+    <v-row class="overflow-hidden">
       <v-col
+        class="d-flex flex-column pa-0 flex-grow-1"
         cols="12"
         lg="8"
       >
@@ -11,19 +12,20 @@
             <v-btn>Load refineries</v-btn>
             <v-divider vertical />
             <v-btn
-              :class="{'bg-error': geoJsonLoadingError, 'bg-info': geoJsonLoading, 'bg-success': boundsJson}"
-              :loading="geoJsonLoading"
-              @click="setBoundaries(boundsUrl)"
+              :class="{'bg-error': boundsLoadingError, 'bg-info': boundsLoading, 'bg-success': boundsJson}"
+              :loading="boundsLoading"
+              @click="setBoundsGeoData(boundsUrl)"
             >
               <template #prepend>
                 <v-icon
-                  :icon="(boundsJson && 'mdi-check') || (geoJsonLoading && 'mdi-reload') || (geoJsonLoadingError && 'mdi-exclamation') || 'mdi-help'"
+                  :icon="(boundsJson && 'mdi-check') || (boundsLoading && 'mdi-reload') || (boundsLoadingError && 'mdi-exclamation') || 'mdi-help'"
                   size="12"
                 />
               </template>
               Load boundaries
             </v-btn>
             <v-divider vertical />
+            <v-btn @click="clearBounds">clearBounds</v-btn>
             <v-btn>Load pipelines</v-btn>
             <v-divider vertical />
             <v-btn>Center map</v-btn>
@@ -40,15 +42,20 @@
             </v-btn-toggle>
           </v-toolbar-items>
         </v-toolbar>
-        <GoogleMapLoader @set:map="setMap" />
+        <div class="flex-grow-1 position-relative">
+          <GoogleMapLoader class="flex-grow-1" @set:map="setMap" />
+        </div>
       </v-col>
 
       <v-col
-        class="flex-grow-1 flex-shrink-0"
+        class="overflow-y-auto h-100"
         cols="12"
         lg="4"
       >
-        ppps
+        <FeaturesList
+          v-if="boundsItems"
+          :items="boundsItems"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -59,8 +66,9 @@ import { ref } from 'vue'
 import { useSetGoogleMap } from '@/composables/setGoogleMap'
 import { useGetGeoJson } from '@/composables/getGeoJson'
 import { IWMGeoLabGeoBoundaries } from '@/types'
-import { fitBounds } from '@/helpers'
+import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
 import { useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
+import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
 const mapType = ref('roadmap')
 
 const boundsUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
@@ -71,25 +79,41 @@ const {
 } = useSetGoogleMap()
 
 const {
-  geoJsonLoading,
-  geoJsonLoadingError,
-  getGeoJson,
-} = useGetGeoJson()
+  geoJsonLoading: boundsLoading,
+  geoJsonLoadingError: boundsLoadingError,
+  getGeoJson: getBounds,
+} = useGetGeoJson(boundsUrl)
 
 const { setGeoDataStyles } = useSetGeoDataStyles()
 
-const geoData = ref()
+const boundsData = ref()
 const boundsJson = ref<IWMGeoLabGeoBoundaries>()
+const boundsItems = ref()
 
-const setBoundaries = async() => {
-  geoJsonLoading.value = true
-  boundsJson.value = await getGeoJson(boundsUrl)
+const setBoundsGeoData = async() => {
+  boundsLoading.value = true
+  boundsJson.value = await getBounds()
 
   if (boundsJson.value) {
-    geoData.value = new google.maps.Data({ map: map.value })
-    geoData.value.addGeoJson(boundsJson.value)
-    setGeoDataStyles(geoData.value)
-    fitBounds(map.value, geoData.value)
+    boundsItems.value = prepareWMGeoLabGeoJson(boundsJson.value)
+    boundsData.value = new google.maps.Data({ map: map.value })
+    boundsData.value.addGeoJson(boundsJson.value)
+    setGeoDataStyles(boundsData.value)
+    fitBounds(map.value, boundsData.value)
+  }
+}
+
+const clearBounds = () => {
+  if (boundsData.value) {
+    boundsData.value.forEach(feature => {
+      boundsData.value.remove(feature)
+    })
+
+    boundsData.value = undefined
+    boundsJson.value = undefined
+    boundsItems.value = undefined
+    boundsLoading.value = undefined
+    boundsLoadingError.value = undefined
   }
 }
 </script>

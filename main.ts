@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { router } from './dev-src/routes'
 import createVue3GmapsPlugin from './src'
 import { IMapOptions } from './src/types'
 // Vuetify
@@ -37,6 +38,7 @@ const mapOptions: IMapOptions = {
 }
 
 createApp(App)
+  .use(router)
   .use(vuetify)
   .use(createVue3GmapsPlugin, { mapOptions })
   .mount('#app')

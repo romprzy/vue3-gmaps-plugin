@@ -60,15 +60,12 @@ loader
     advancedMarkerElement.value = AdvancedMarkerElement
     loaded.value = true
     emits('set:map', map)
-
-    const types = map.mapTypes
-    console.log('types', types)
-    console.log('map', map)
   })
   .catch((e) => {
     map = undefined
     errorTextValue.value = props.errorText
-    console.log(e)
+    console.log('GoogleMapLoader error', e)
+    console.error(e)
     loaded.value = false
   })
   .finally(() => {

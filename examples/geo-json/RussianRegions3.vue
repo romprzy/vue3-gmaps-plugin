@@ -23,7 +23,7 @@
       <div style="padding: 0 1em;"><button style="display: block; padding: .2em 1em;" @click="fitBounds(map, geoData)">fitBounds</button></div>
 
       <template v-if="items">
-        <RussianRegions3List
+        <FeaturesList
           :items="items"
           @click:item="toggleActiveItem($event.id, geoData, items)"
           @mouseenter:item="toggleHoverItem($event.id, geoData, items)"
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import RussianRegions3List from './RussianRegions3List.vue'
+import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
 import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
 import { useGetGeoJson } from '@/composables/getGeoJson'
@@ -71,7 +71,7 @@ const {
 } = useSetGoogleMap()
 
 const setGeoJson = async(geoJsonUrl) => {
-  const geoJson: IWMGeoLabGeoBoundaries = await getGeoJson(geoJsonUrl)
+  let geoJson: IWMGeoLabGeoBoundaries | {} = await getGeoJson(geoJsonUrl)
   items.value = prepareWMGeoLabGeoJson(geoJson)
 
   geoData.value = new google.maps.Data({ map: map.value })
@@ -83,6 +83,7 @@ const setGeoJson = async(geoJsonUrl) => {
 
   const { clearListeners } = setGeoDataListeners(geoData.value, items.value)
   clearEvents = clearListeners
+  geoJson = {}
 }
 
 onBeforeUnmount(() => {
