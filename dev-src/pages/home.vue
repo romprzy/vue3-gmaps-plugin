@@ -32,7 +32,7 @@
         cols="12"
         lg="6"
       >
-        <RussianOilPipielines />
+        <RussianOilPipelines />
       </v-col>
       <v-col
         cols="12"
@@ -82,7 +82,7 @@ import RefineriesExample2 from '../../examples/markers/RefineriesExample2.vue'
 import RefineriesExample from '../../examples/markers/RefineriesExample.vue'
 import RussianRegions from '../../examples/geo-json/RussianRegions.vue'
 import RefineriesExample3 from '../../examples/markers/RefineriesExample3.vue'
-import RussianOilPipielines from '../../examples/geo-json/RussianOilPipielines.vue'
+import RussianOilPipelines from '../../examples/geo-json/RussianOilPipelines.vue'
 import RussianRegions2 from '../../examples/geo-json/RussianRegions2.vue'
 import CombinedMap from '../../examples/combined-maps/CombinedMap.vue'
 import RussianRegions3 from '../../examples/geo-json/RussianRegions3.vue'

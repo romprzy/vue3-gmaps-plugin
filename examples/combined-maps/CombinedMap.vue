@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { useSetGoogleMap } from '@/composables/setGoogleMap'
 import { useGetGeoJson } from '@/composables/getGeoJson'
 import { IWMGeoLabGeoBoundaries } from '@/types'
@@ -116,4 +116,8 @@ const clearBounds = () => {
     boundsLoadingError.value = undefined
   }
 }
+
+onBeforeUnmount(() => {
+  clearBounds()
+})
 </script>
