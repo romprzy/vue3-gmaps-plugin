@@ -4,11 +4,13 @@ import { GoogleMapLoader } from './components'
 import { Vue3GmapsPluginOptions } from './types/Vue3GmapsPluginOptions.ts'
 import { LoaderOptions } from '@googlemaps/js-api-loader'
 
-declare module 'vue' {
-  export interface GlobalComponents {
-    GoogleMapLoader: typeof GoogleMapLoader
-  }
-}
+import {
+  useGetGeoJson,
+  useSetGeoDataStyles,
+  useCalculateGMLOptions,
+  useSetGeoDataEvents,
+  useSetGoogleMap,
+} from './composables'
 
 const loaderOptions: Partial<LoaderOptions> = {
   version: 'weekly',
@@ -18,6 +20,8 @@ const loaderOptions: Partial<LoaderOptions> = {
 const createVue3GmapsPlugin: Plugin = {
   install: (app: App, options: Vue3GmapsPluginOptions = { apiKey: '', loaderOptions }) => {
     app.component('GoogleMapLoader', GoogleMapLoader)
+
+    app.use(useSetGoogleMap)
 
     app.provide('apiKey', options.apiKey)
     app.provide('errorText', options.errorText)
@@ -29,4 +33,9 @@ const createVue3GmapsPlugin: Plugin = {
 export default createVue3GmapsPlugin
 export {
   GoogleMapLoader,
+  useGetGeoJson,
+  useSetGeoDataStyles,
+  useCalculateGMLOptions,
+  useSetGeoDataEvents,
+  useSetGoogleMap,
 }
