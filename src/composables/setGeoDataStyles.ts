@@ -8,16 +8,24 @@ export interface IUseSetGeoDataStylesOptions {
 
 export const useSetGeoDataStyles = () => {
   const setGeoDataStyles = (geoData: google.maps.Data, styleOptions?: IUseSetGeoDataStylesOptions) =>  {
-    let defaultS = styleOptions?.styles?.defaultStyle || defaultStyle
-    let hasActiveStyles = styleOptions?.styles?.activeStyleOverride || (styleOptions?.keys?.includes('active'))
-    let hasHoverStyles = styleOptions?.styles?.hoverStyleOverride || (styleOptions?.keys?.includes('hover'))
-    let activeStyles = styleOptions?.styles?.activeStyleOverride || (styleOptions?.keys?.includes('active') && activeStyleOverride)
-    let hoverStyles = styleOptions?.styles?.hoverStyleOverride || (styleOptions?.keys?.includes('hover') && hoverStyleOverride)
+    let defaultS = { ...defaultStyle, ...(styleOptions?.styles?.defaultStyle || {}) }
+    let hasActiveStyles = styleOptions?.styles?.activeStyleOverride || styleOptions?.keys?.includes('active')
+    let hasHoverStyles = styleOptions?.styles?.hoverStyleOverride || styleOptions?.keys?.includes('hover')
+    let activeStyles: google.maps.Data.StyleOptions = {
+      ...activeStyleOverride,
+      ...styleOptions?.styles?.activeStyleOverride,
+      ...(styleOptions?.keys?.includes('active') && activeStyleOverride),
+    }
+    let hoverStyles: google.maps.Data.StyleOptions = {
+      ...hoverStyleOverride,
+      ...styleOptions?.styles?.hoverStyleOverride,
+      ...(styleOptions?.keys?.includes('hover') && hoverStyleOverride),
+    }
 
     geoData.setStyle((feature) => ({
       ...defaultS,
-      ...(hasActiveStyles && feature.getProperty('active') && (activeStyles) || {}),
-      ...(hasHoverStyles && feature.getProperty('hover') && (hoverStyles) || {}),
+      ...(hasActiveStyles && feature.getProperty('active') && activeStyles || {}),
+      ...(hasHoverStyles && feature.getProperty('hover') && hoverStyles || {}),
     }))
   }
 

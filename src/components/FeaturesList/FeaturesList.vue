@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { IFeaturesListProps } from '@/components/FeaturesList/index.ts'
+import { IFeaturesListProps } from '@/components/FeaturesList/'
 defineProps<IFeaturesListProps>()
 defineEmits(['click:item', 'mouseenter:item', 'mouseleave:item'])
 </script>

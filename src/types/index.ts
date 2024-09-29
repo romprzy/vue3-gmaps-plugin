@@ -1,4 +1,5 @@
 import MapOptions = google.maps.MapOptions
+
 export type { IWMGeoLabGeoBoundariesProperties, IWMGeoLabGeoBoundaries, IWMGeoLabGeoFeature } from './WMGeoLab.ts'
 
 export interface IMapOptions extends Omit<MapOptions, 'zoom'> {
