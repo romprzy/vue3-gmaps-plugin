@@ -24,9 +24,21 @@
               </template>
               Load boundaries
             </v-btn>
-            <v-divider vertical />
             <v-btn @click="clearBounds">clearBounds</v-btn>
-            <v-btn>Load pipelines</v-btn>
+            <v-divider vertical />
+            <v-btn
+              :class="{'bg-error': pipelinesLoadingError, 'bg-info': pipelinesLoading, 'bg-success': pipelinesJson}"
+              :loading="pipelinesLoading"
+              @click="setPipelinesGeoData(pipelinesUrl)"
+            >
+              <template #prepend>
+                <v-icon
+                  :icon="(pipelinesJson && 'mdi-check') || (pipelinesLoading && 'mdi-reload') || (pipelinesLoadingError && 'mdi-exclamation') || 'mdi-help'"
+                  size="12"
+                />
+              </template>
+              Load pipelines
+            </v-btn>
             <v-divider vertical />
             <v-btn>Center map</v-btn>
             <v-divider vertical />
@@ -63,21 +75,25 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import { useSetGoogleMap } from '@/composables/setGoogleMap'
-import { useGetGeoJson } from '@/composables/getGeoJson'
-import { IWMGeoLabGeoBoundaries } from '@/types'
+import { IGoogleStyle, IWMGeoLabGeoBoundaries } from '@/types'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
-import { useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
+import { IUseSetGeoDataStylesOptions, useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
+import { useTheme } from 'vuetify'
+const vTheme = useTheme()
 import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
+import { useGetGeoJson, useSetGoogleMap } from '@'
 const mapType = ref('roadmap')
 
 const boundsUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
+const pipelinesUrl = '/public/Oil Infrastructure - map data 2024-06-12_1934.geo.json?url'
 
 const {
   map,
   setMap,
 } = useSetGoogleMap()
 
+
+// boundaries
 const {
   geoJsonLoading: boundsLoading,
   geoJsonLoadingError: boundsLoadingError,
@@ -90,6 +106,18 @@ const boundsData = ref()
 const boundsJson = ref<IWMGeoLabGeoBoundaries>()
 const boundsItems = ref()
 
+const defaultBoundsStyles: IGoogleStyle = {
+  strokeColor: vTheme.current.value.colors.info,
+  fillColor: vTheme.current.value.colors.success,
+  fillOpacity: .15,
+}
+
+const boundsStyleOptions: IUseSetGeoDataStylesOptions = {
+  styles: {
+    defaultStyle: defaultBoundsStyles,
+  },
+}
+
 const setBoundsGeoData = async() => {
   boundsLoading.value = true
   boundsJson.value = await getBounds()
@@ -98,7 +126,7 @@ const setBoundsGeoData = async() => {
     boundsItems.value = prepareWMGeoLabGeoJson(boundsJson.value)
     boundsData.value = new google.maps.Data({ map: map.value })
     boundsData.value.addGeoJson(boundsJson.value)
-    setGeoDataStyles(boundsData.value)
+    setGeoDataStyles(boundsData.value, boundsStyleOptions)
     fitBounds(map.value, boundsData.value)
   }
 }
@@ -114,6 +142,49 @@ const clearBounds = () => {
     boundsItems.value = undefined
     boundsLoading.value = undefined
     boundsLoadingError.value = undefined
+  }
+}
+
+// pipelines
+const {
+  geoJsonLoading: pipelinesLoading,
+  geoJsonLoadingError: pipelinesLoadingError,
+  getGeoJson: getPipelines,
+} = useGetGeoJson(pipelinesUrl)
+
+const pipelinesData = ref()
+const pipelinesJson = ref<IWMGeoLabGeoBoundaries>()
+const pipelinesItems = ref()
+console.log('vTheme.current.value.colors.success', vTheme.current.value.colors.success)
+const defaultPipelinesStyles: IGoogleStyle = {
+  strokeColor: 'green',
+  fillColor: vTheme.current.value.colors.success,
+}
+
+const setPipelinesGeoData = async() => {
+  pipelinesLoading.value = true
+  pipelinesJson.value = await getPipelines()
+
+  if (pipelinesJson.value) {
+    pipelinesItems.value = prepareWMGeoLabGeoJson(pipelinesJson.value)
+    pipelinesData.value = new google.maps.Data({ map: map.value })
+    pipelinesData.value.addGeoJson(pipelinesJson.value)
+    setGeoDataStyles(pipelinesData.value, { styles: {defaultStyle: defaultPipelinesStyles} })
+    fitBounds(map.value, pipelinesData.value)
+  }
+}
+
+const clearPipelines = () => {
+  if (pipelinesData.value) {
+    pipelinesData.value.forEach(feature => {
+      pipelinesData.value.remove(feature)
+    })
+
+    pipelinesData.value = undefined
+    pipelinesJson.value = undefined
+    pipelinesItems.value = undefined
+    pipelinesLoading.value = undefined
+    pipelinesLoadingError.value = undefined
   }
 }
 
