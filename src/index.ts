@@ -1,10 +1,15 @@
 import { App, Plugin } from 'vue'
 import './style.scss'
-import * as components from './components'
-import * as composables from './composables'
-
 import { Vue3GmapsPluginOptions } from './types/Vue3GmapsPluginOptions.ts'
 import { LoaderOptions } from '@googlemaps/js-api-loader'
+import components from '@/components'
+import {
+  useGetGeoJson,
+  useSetGeoDataStyles,
+  useCalculateGMLOptions,
+  useSetGeoDataEvents,
+  useSetGoogleMap,
+} from './composables'
 
 const loaderOptions: Partial<LoaderOptions> = {
   version: 'weekly',
@@ -16,11 +21,6 @@ const createVue3GmapsPlugin: Plugin = {
     if (options.components) {
       for (const name of Object.keys(options.components)) {
         app.component(name, options.components[name])
-      }
-    }
-    if (options.composables) {
-      for (const name of Object.keys(options.composables)) {
-        app.use(options.composables[name])
       }
     }
 
@@ -35,5 +35,9 @@ const createVue3GmapsPlugin: Plugin = {
 export default createVue3GmapsPlugin
 export {
   components,
-  composables,
+  useGetGeoJson,
+  useSetGeoDataStyles,
+  useCalculateGMLOptions,
+  useSetGeoDataEvents,
+  useSetGoogleMap,
 }

@@ -38,8 +38,8 @@ export default defineConfig({
       // isProduction: true,
     }),
     dts({
+      rollupTypes: true,
       tsconfigPath: './tsconfig.build.json',
-      exclude: 'examples',
     }),
   ],
 })
