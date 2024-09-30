@@ -6,14 +6,11 @@
       style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;"
     >
       <slot
-        :advancedMarkerElement="advancedMarkerElement"
-        :google="loader"
-        :map="map"
         name="error-text"
       >{{ errorTextValue }}</slot>
 
     </div>
-    <template v-if="loaded">
+    <template v-if="loaded && advancedMarkerElement && map">
       <slot
         :advancedMarkerElement="advancedMarkerElement"
         :google="loader"

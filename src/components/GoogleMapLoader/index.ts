@@ -14,6 +14,6 @@ export interface IGoogleMapLoaderProps {
 }
 
 export interface IGoogleMapLoaderSlots {
-  default(_props: { errorTextValue?: string | undefined }): any
+  'error-text'(_props: { errorTextValue?: string | undefined }): any
   marker(_props: IGoogleMapMarkerSlotProps): any
 }
