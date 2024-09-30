@@ -28,8 +28,7 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import { ref } from 'vue'
 import { useCalculateGMLOptions } from '../../composables/useCalculateGMLOptions.ts'
-import { IGoogleMapLoaderProps } from './index.ts'
-// import { IGoogleMapLoaderProps, IGoogleMapLoaderSlots } from './'
+import { IGoogleMapLoaderProps, IGoogleMapLoaderSlots } from './'
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement
 
 const props = withDefaults(defineProps<IGoogleMapLoaderProps>(), {
@@ -37,7 +36,7 @@ const props = withDefaults(defineProps<IGoogleMapLoaderProps>(), {
 })
 
 const emits = defineEmits(['set:map', 'loaded'])
-// defineSlots<IGoogleMapLoaderSlots>()
+defineSlots<IGoogleMapLoaderSlots>()
 
 const {
   errorTextValue,
