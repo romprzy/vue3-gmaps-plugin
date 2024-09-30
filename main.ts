@@ -2,16 +2,18 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { router } from './dev-src/routes'
 import createVue3GmapsPlugin from './src'
+import * as components from './src/components'
+import * as composables from './src/composables'
 import { IMapOptions } from './src/types'
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
+import * as vuetifyComponents from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 const vuetify = createVuetify({
-  components,
+  components: vuetifyComponents,
   directives,
   theme: {
     defaultTheme: 'dark',
@@ -40,5 +42,5 @@ const mapOptions: IMapOptions = {
 createApp(App)
   .use(router)
   .use(vuetify)
-  .use(createVue3GmapsPlugin, { mapOptions })
+  .use(createVue3GmapsPlugin, { components, composables, mapOptions })
   .mount('#app')

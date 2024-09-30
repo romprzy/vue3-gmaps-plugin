@@ -39,15 +39,15 @@ import { onBeforeUnmount, ref } from 'vue'
 import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
 import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
-import { useGetGeoJson } from '@/composables/getGeoJson'
-import { useSetGeoDataEvents } from '@/composables/setGeoDataEvents'
-import { useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
-import { useSetGoogleMap } from '@/composables/setGoogleMap'
+import { useGetGeoJson } from '@/composables/useGetGeoJson'
+import { useSetGeoDataEvents } from '@/composables/useSetGeoDataEvents'
+import { useSetGeoDataStyles } from '@/composables/useSetGeoDataStyles'
+import { useSetGoogleMap } from '@/composables/useSetGoogleMap'
 
 const items = ref()
 const geoData = ref()
 
-const geoJsonUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
+const geoJsonUrl = '/data/geoBoundaries-RUS-ADM1_simplified.geojson?url'
 let clearEvents = () => {}
 
 const {

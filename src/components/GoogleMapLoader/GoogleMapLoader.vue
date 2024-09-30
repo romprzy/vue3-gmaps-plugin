@@ -9,6 +9,7 @@
         :advancedMarkerElement="advancedMarkerElement"
         :google="loader"
         :map="map"
+        name="error-text"
       >{{ errorTextValue }}</slot>
 
     </div>
@@ -26,7 +27,7 @@
 <script setup lang="ts">
 import { Loader } from '@googlemaps/js-api-loader'
 import { ref } from 'vue'
-import { useCalculateGMLOptions } from '../../composables/calculateGMLOptions.ts'
+import { useCalculateGMLOptions } from '../../composables/useCalculateGMLOptions.ts'
 import { IGoogleMapLoaderProps } from './index.ts'
 // import { IGoogleMapLoaderProps, IGoogleMapLoaderSlots } from './'
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement

@@ -77,15 +77,14 @@
 import { onBeforeUnmount, ref } from 'vue'
 import { IGoogleStyle, IWMGeoLabGeoBoundaries } from '@/types'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
-import { IUseSetGeoDataStylesOptions, useSetGeoDataStyles } from '@/composables/setGeoDataStyles'
+import { IUseSetGeoDataStylesOptions, useSetGeoDataStyles } from '@/composables/useSetGeoDataStyles'
 import { useTheme } from 'vuetify'
 const vTheme = useTheme()
-import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
-import { useGetGeoJson, useSetGoogleMap } from '@'
+import { useGetGeoJson, useSetGoogleMap } from '@/composables'
 const mapType = ref('roadmap')
 
-const boundsUrl = '/public/geoBoundaries-RUS-ADM1_simplified.geojson?url'
-const pipelinesUrl = '/public/Oil Infrastructure - map data 2024-06-12_1934.geo.json?url'
+const boundsUrl = '/data/geoBoundaries-RUS-ADM1_simplified.geojson?url'
+const pipelinesUrl = '/data/Oil Infrastructure - map data 2024-06-12_1934.geo.json?url'
 
 const {
   map,
