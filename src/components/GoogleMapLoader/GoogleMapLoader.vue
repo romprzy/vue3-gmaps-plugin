@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { Loader } from '@googlemaps/js-api-loader'
 import { ref } from 'vue'
-import { useCalculateGMLOptions } from '../../composables/useCalculateGMLOptions.ts'
+import { useCalculateGMLOptions } from '@/composables/useCalculateGMLOptions'
 import { IGoogleMapLoaderProps, IGoogleMapLoaderSlots } from './'
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement
 
@@ -61,7 +61,6 @@ loader
   .catch((e) => {
     map = undefined
     errorTextValue.value = props.errorText
-    console.log('GoogleMapLoader error', e)
     console.error(e)
     loaded.value = false
   })

@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'url'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
+import unpluginComponents from 'unplugin-vue-components/vite'
 
 // const host = process.env.VITE_SERVER_HOST
 const env = loadEnv('development', process.cwd(), '')
@@ -38,8 +39,12 @@ export default defineConfig({
       // isProduction: true,
     }),
     dts({
-      rollupTypes: true,
+      // rollupTypes: true,
+      // include: './components.d.ts',
       tsconfigPath: './tsconfig.build.json',
+    }),
+    unpluginComponents({
+      dts: true,
     }),
   ],
 })

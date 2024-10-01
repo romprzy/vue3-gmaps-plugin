@@ -1,8 +1,9 @@
 import { App, Plugin } from 'vue'
-import './style.scss'
-import { Vue3GmapsPluginOptions } from './types/Vue3GmapsPluginOptions.ts'
+import '@/style.scss'
+import { Vue3GmapsPluginOptions } from '@/types'
 import { LoaderOptions } from '@googlemaps/js-api-loader'
-import components from '@/components'
+import * as components from '@/components'
+
 import {
   useGetGeoJson,
   useSetGeoDataStyles,
@@ -10,6 +11,16 @@ import {
   useSetGeoDataEvents,
   useSetGoogleMap,
 } from './composables'
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    GoogleMapLoader: typeof import('./components')['GoogleMapLoader']
+    BasicMarker: typeof import('./components')['BasicMarker']
+    BasicMarkerElement: typeof import('./components')['BasicMarkerElement']
+    FeaturesList: typeof import('./components')['FeaturesList']
+    GoogleMapMarker: typeof import('./components')['GoogleMapMarker']
+  }
+}
 
 const loaderOptions: Partial<LoaderOptions> = {
   version: 'weekly',

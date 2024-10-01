@@ -9,7 +9,7 @@
         <v-toolbar density="compact">
           <v-toolbar-title>Title</v-toolbar-title>
           <v-toolbar-items>
-            <v-btn>Load refineries</v-btn>
+            <v-btn @click="loadMarkers">Load refineries</v-btn>
             <v-divider vertical />
             <v-btn
               :class="{'bg-error': boundsLoadingError, 'bg-info': boundsLoading, 'bg-success': boundsJson}"
@@ -40,6 +40,8 @@
               Load pipelines
             </v-btn>
             <v-divider vertical />
+            <v-btn @click="clearPipelines">Clear pipelines</v-btn>
+            <v-divider vertical />
             <v-btn>Center map</v-btn>
             <v-divider vertical />
             <v-btn-toggle
@@ -55,7 +57,23 @@
           </v-toolbar-items>
         </v-toolbar>
         <div class="flex-grow-1 position-relative">
-          <GoogleMapLoader class="flex-grow-1" @set:map="setMap" />
+          <GoogleMapLoader class="flex-grow-1" @set:map="setMap">
+            <template #marker="props">
+              <BasicMarker
+                v-for="marker in markers"
+                :key="marker.id"
+                v-bind="props"
+                :options="{ position: { lat, lng } = marker, title: marker.name }"
+                round
+                :size="markerSize(marker)"
+                @click:marker="clickMarker"
+              >
+                <template #subtitle>
+                  <div class="google-maps-marker_subtitle">{{ marker.mTPerYear || '?' }}</div>
+                </template>
+              </BasicMarker>
+            </template>
+          </GoogleMapLoader>
         </div>
       </v-col>
 
@@ -74,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, ref, shallowRef } from 'vue'
 import { IGoogleStyle, IWMGeoLabGeoBoundaries } from '@/types'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
 import { IUseSetGeoDataStylesOptions, useSetGeoDataStyles } from '@/composables/useSetGeoDataStyles'
@@ -101,8 +119,8 @@ const {
 
 const { setGeoDataStyles } = useSetGeoDataStyles()
 
-const boundsData = ref()
-const boundsJson = ref<IWMGeoLabGeoBoundaries>()
+const boundsData = shallowRef()
+const boundsJson = shallowRef<IWMGeoLabGeoBoundaries>()
 const boundsItems = ref()
 
 const defaultBoundsStyles: IGoogleStyle = {
@@ -151,10 +169,9 @@ const {
   getGeoJson: getPipelines,
 } = useGetGeoJson(pipelinesUrl)
 
-const pipelinesData = ref()
-const pipelinesJson = ref<IWMGeoLabGeoBoundaries>()
+const pipelinesData = shallowRef()
+const pipelinesJson = shallowRef<IWMGeoLabGeoBoundaries>()
 const pipelinesItems = ref()
-console.log('vTheme.current.value.colors.success', vTheme.current.value.colors.success)
 const defaultPipelinesStyles: IGoogleStyle = {
   strokeColor: 'green',
   fillColor: vTheme.current.value.colors.success,
@@ -185,6 +202,23 @@ const clearPipelines = () => {
     pipelinesLoading.value = undefined
     pipelinesLoadingError.value = undefined
   }
+}
+
+// markers
+const markers = shallowRef()
+const markerSize = (marker) => 20 * Math.sqrt(marker.mTPerYear || 2)
+const clickMarker = ({ $event, markerElement, item }) => {
+  console.log('$event', $event)
+  console.log('marker', markerElement)
+  console.log('item', item)
+
+  markerElement.style.backgroundColor = 'red'
+}
+
+const loadMarkers = async () => {
+  const markerItems = await fetch('/data/refineries.json')
+    .then(response => response.json())
+  markers.value = markerItems.filter(({ lat, lng }) => lat && lng)
 }
 
 onBeforeUnmount(() => {

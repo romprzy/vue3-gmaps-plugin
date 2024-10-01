@@ -49,7 +49,6 @@ onMounted(() => {
 })
 </script>
 
-
 <style lang="scss">
 .google-maps-marker {
   color: #fff;
