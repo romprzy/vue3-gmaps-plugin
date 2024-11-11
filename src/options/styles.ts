@@ -1,4 +1,4 @@
-import { IGoogleStyle } from '../types'
+import { IGoogleStyle } from '@/types'
 export interface IGoogleStyles {
   defaultStyle?: google.maps.Data.StyleOptions
   activeStyleOverride?: google.maps.Data.StyleOptions

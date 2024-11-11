@@ -26,5 +26,7 @@
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["examples"]
+  "exclude": [
+    "dev-src/examples"
+  ]
 }

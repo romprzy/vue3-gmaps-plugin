@@ -1,18 +1,17 @@
 <template>
-  <div ref="markerElement" style="color: white;">
+  <div ref="markerElement" class="google-maps-marker">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { IGoogleMapMarkerProps } from './index.ts'
-import { onMounted, ref } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
 
 const props = defineProps<IGoogleMapMarkerProps>()
-
-const markerElement = ref()
+const markerElement = useTemplateRef('markerElement')
 
 onMounted(() => {
-  new props.advancedMarkerElement(props.options)
+  // new props.advancedMarkerElement(props.options)
 })
 </script>

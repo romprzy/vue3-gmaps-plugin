@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { Loader } from '@googlemaps/js-api-loader'
-import { ref } from 'vue'
+import { ref, shallowRef, useTemplateRef } from 'vue'
 import { useCalculateGMLOptions } from '@/composables/useCalculateGMLOptions'
 import { IGoogleMapLoaderProps, IGoogleMapLoaderSlots } from './'
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement
@@ -43,20 +43,22 @@ const {
 
 const loader = new Loader(loaderOptions)
 
-const mapContainer = ref()
+const mapContainer = useTemplateRef('mapContainer')
 const loaded = ref<boolean>(false)
 let map: google.maps.Map | undefined
-const advancedMarkerElement = ref<typeof AdvancedMarkerElement>()
+const advancedMarkerElement = shallowRef<typeof AdvancedMarkerElement>()
 
 loader
   .importLibrary('maps')
-  .then(async ({ Map }) => {
-    errorTextValue.value = ''
-    map = new Map(mapContainer.value, mapOptions)
-    const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary
-    advancedMarkerElement.value = AdvancedMarkerElement
-    loaded.value = true
-    emits('set:map', map)
+  .then(async ({ Map, MapTypeId }) => {
+    if (mapContainer.value) {
+      errorTextValue.value = ''
+      map = new Map(mapContainer.value, mapOptions)
+      const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary
+      advancedMarkerElement.value = AdvancedMarkerElement
+      loaded.value = true
+      emits('set:map', map)
+    }
   })
   .catch((e) => {
     map = undefined

@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { IWMGeoLabGeoBoundaries } from '../types'
+import { IWMGeoLabGeoBoundaries } from '@/types'
 
 export const useGetGeoJson = (url: string | URL) => {
   const geoJsonLoading = ref<boolean>()
@@ -19,6 +19,13 @@ export const useGetGeoJson = (url: string | URL) => {
       .finally(() => {
         geoJsonLoading.value = false
       })
+    const features = geoJson.features
+    //   .filter(({ properties }) => !properties
+    //     .country
+    //     .split(',')
+    //     .includes('United States'))
+    // console.log(features)
+    geoJson.features = features
 
     return geoJsonLoadingError.value ? undefined : geoJson
   }

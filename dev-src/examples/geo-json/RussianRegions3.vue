@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import FeaturesList from '@/components/FeaturesList/FeaturesList.vue'
+import FeaturesList from '../../../src/components/FeaturesList/FeaturesList.vue'
 import { IWMGeoLabGeoBoundaries } from '@/types/WMGeoLab'
 import { fitBounds, prepareWMGeoLabGeoJson } from '@/helpers'
 import { useGetGeoJson } from '@/composables/useGetGeoJson'

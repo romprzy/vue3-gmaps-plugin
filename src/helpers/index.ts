@@ -3,12 +3,15 @@ import { IWMGeoLabGeoBoundaries, IWMGeoLabGeoFeature } from '@/types/'
 export const prepareWMGeoLabGeoJson = (geoJson: IWMGeoLabGeoBoundaries) => {
   if (geoJson.type === 'FeatureCollection') {
     geoJson.features.forEach((feature: IWMGeoLabGeoFeature) => {
-      feature.id = feature.properties.shapeID
-      feature.properties.id = feature.properties.shapeID
+      if (feature.properties?.shapeID) {
+        if (!feature.id) feature.id = feature.properties?.shapeID
+        // feature.properties.id = feature.properties.shapeID
+      }
     })
 
     return geoJson.features.map((feature: IWMGeoLabGeoFeature) => {
       const properties = feature.properties
+      if (!feature.properties) return undefined
       return {
         id: properties?.id,
         name: properties?.shapeName,

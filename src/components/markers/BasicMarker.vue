@@ -19,40 +19,44 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { useTemplateRef } from 'vue'
 interface IGoogleMapMarkerProps {
-  map: google.maps.Map
   options: google.maps.marker.AdvancedMarkerElementOptions
-  advancedMarkerElement: typeof google.maps.marker.AdvancedMarkerElement
   round?: boolean
   size?: number
 }
 
 const props = defineProps<IGoogleMapMarkerProps>()
 const emits = defineEmits(['click:marker'])
-const markerElement = ref()
+const markerElement = useTemplateRef('markerElement')
 
-onMounted(() => {
-  const marker = new props.advancedMarkerElement({
-    ...props.options,
-    map: props.map,
-    content: markerElement.value,
-  })
-
-  marker.addListener('click', ($event: MouseEvent) => {
-    emits('click:marker', {
-      markerElement: markerElement.value,
-      $event,
-      options: props.options,
-    })
-  })
-})
+// onMounted(async () => {
+//   const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary
+//   const marker = new AdvancedMarkerElement({
+//     position: {
+//       lat: props.options.position.lat,
+//       lng: props.options.position.lng,
+//     },
+//     map: props.map,
+//     // content: markerElement.value,
+//   })
+//
+//   // window.markers.push(marker)
+//   //
+//   // marker.addListener('click', ($event: MouseEvent) => {
+//   //   emits('click:marker', {
+//   //     markerElement: markerElement.value,
+//   //     $event,
+//   //     options: props.options,
+//   //   })
+//   // })
+// })
 </script>
 
 <style lang="scss">
 .google-maps-marker {
   color: #fff;
-  background-color: rgba(200, 100, 0, .25);
+  //background-color: rgba(200, 100, 0, .25);
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,7 +1,7 @@
 import { LoaderOptions } from '@googlemaps/js-api-loader'
 import { ref, inject } from 'vue'
 import MapOptions = google.maps.MapOptions
-import { IGoogleMapLoaderProps } from '../components/GoogleMapLoader'
+import { IGoogleMapLoaderProps } from '@/components/GoogleMapLoader'
 
 export const useCalculateGMLOptions = (props: IGoogleMapLoaderProps) => {
   const injectedErrorText = inject<string | undefined>('errorText')
@@ -20,6 +20,7 @@ export const useCalculateGMLOptions = (props: IGoogleMapLoaderProps) => {
     ...props.loaderOptions,
     ...injectedLoaderOptions,
     apiKey,
+    version: 'alpha',
   }
 
   return {

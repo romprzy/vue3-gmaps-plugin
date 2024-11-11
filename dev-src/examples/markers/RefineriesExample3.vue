@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import BasicMarker from '@/components/markers/BasicMarker.vue'
+import BasicMarker from '../../../src/components/markers/BasicMarker.vue'
 import items from './markers.ts'
 const markers = items.filter(({ lat, lng }) => lat && lng)
 

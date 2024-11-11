@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import RefineriesExample2 from '../../examples/markers/RefineriesExample2.vue'
-import RefineriesExample from '../../examples/markers/RefineriesExample.vue'
-import RefineriesExample3 from '../../examples/markers/RefineriesExample3.vue'
+import RefineriesExample2 from '../examples/markers/RefineriesExample2.vue'
+import RefineriesExample from '../examples/markers/RefineriesExample.vue'
+import RefineriesExample3 from '../examples/markers/RefineriesExample3.vue'
 </script>
