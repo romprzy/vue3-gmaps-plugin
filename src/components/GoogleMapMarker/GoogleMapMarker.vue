@@ -6,12 +6,7 @@
 
 <script setup lang="ts">
 import { IGoogleMapMarkerProps } from './index.ts'
-import { onMounted, useTemplateRef } from 'vue'
 
-const props = defineProps<IGoogleMapMarkerProps>()
-const markerElement = useTemplateRef('markerElement')
-
-onMounted(() => {
-  // new props.advancedMarkerElement(props.options)
-})
+defineProps<IGoogleMapMarkerProps>()
+defineEmits(['click:marker'])
 </script>

@@ -19,16 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 interface IGoogleMapMarkerProps {
   options: google.maps.marker.AdvancedMarkerElementOptions
   round?: boolean
   size?: number
 }
 
-const props = defineProps<IGoogleMapMarkerProps>()
-const emits = defineEmits(['click:marker'])
-const markerElement = useTemplateRef('markerElement')
+defineProps<IGoogleMapMarkerProps>()
+defineEmits(['click:marker'])
+// const markerElement = useTemplateRef('markerElement')
 
 // onMounted(async () => {
 //   const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary

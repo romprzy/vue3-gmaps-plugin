@@ -50,7 +50,7 @@ const advancedMarkerElement = shallowRef<typeof AdvancedMarkerElement>()
 
 loader
   .importLibrary('maps')
-  .then(async ({ Map, MapTypeId }) => {
+  .then(async ({ Map }) => {
     if (mapContainer.value) {
       errorTextValue.value = ''
       map = new Map(mapContainer.value, mapOptions)

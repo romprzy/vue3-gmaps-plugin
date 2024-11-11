@@ -1,7 +1,7 @@
 <template>
   <GoogleMapLoader>
     <template #marker="props">
-      <BasicMarker
+      <GoogleMapMarker
         v-for="marker in markers"
         :key="marker.id"
         v-bind="props"
@@ -13,13 +13,13 @@
         <template #subtitle>
           <div class="google-maps-marker_subtitle">{{ marker.mTPerYear || '?' }}</div>
         </template>
-      </BasicMarker>
+      </GoogleMapMarker>
     </template>
   </GoogleMapLoader>
 </template>
 
 <script setup lang="ts">
-import BasicMarker from '../../../src/components/markers/BasicMarker.vue'
+import { GoogleMapMarker } from '@/components'
 import items from './markers.ts'
 const markers = items.filter(({ lat, lng }) => lat && lng)
 
